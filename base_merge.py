@@ -263,31 +263,13 @@ for count in range(30):#TODO 撮影ボタンを押してからフレーム左フ
 
 # ジャンプ判定のベース画像選定方法
 faces_array = np.array(faces_list, dtype=int)#listからarrayに変換
-index = np.argmax(faces_array[:,1])#顔が一番含まれている画像のindexを抽出
-index_face_list = np.where(faces_array[:,1] == index)#顔が一番含まれている画像一覧のindexを取得
-# 顔が一番含まれている画像一覧を
-sort_y = []
-sum_y = 0
-ina = 0
-for lists in faces_list:
-    sum_y += lists[4]
-    ina = ina + 1
-    if ina%2 == 0:
-        sort_y.append(sum_y)
-        sum_y = 0
-        print(sort_y)
-print('並び替え')
-b = np.argsort(sum_y)
-    
-print('---turami---')
-print(b[0])
-
-jump_number = []
-jump_number = np.where(faces_array[:,4] == b[0])
-# リストをソートする
+index = np.max(faces_array[:,1])#顔が一番含まれている数を出力
+indexs = np.where((faces_array[:,1] == index) & (np.max(faces_array[:,4]) == faces_array[:,4]))# 顔が一番含まれているかつyが一番高い
+print('--index--')
+print(indexs)
 
         
-img_base = cv2.imread('output_all/'+ str(faces_array[jump_number[0,1],0])+'.jpg')  #画像読み取りimread(filename)
+img_base = cv2.imread('output_all/'+ str(faces_array[indexs,0])+'.jpg')  #画像読み取りimread(filename)
 img_best = img_base.copy()
 cv2.imwrite('best.jpg', img_best)#とりあえず選定されたベストの画像は書き出しておく#比較のために
 
