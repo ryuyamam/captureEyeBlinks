@@ -279,13 +279,11 @@ for face in face_image_most_included:
 extraction_face_array = face_image_most_included[max_ave_y_index]#idごとに配列を抽出
         
 
-img_base = cv2.imread('output_all/'+ str(faces_array[index,0])+'.jpg')  #画像読み取りimread(filename)
+img_base = cv2.imread('output_all/'+ str(face_image_most_included[max_ave_y_index,0])+'.jpg')  #画像読み取りimread(filename)
 img_best = img_base.copy()
 cv2.imwrite('best.jpg', img_best)#とりあえず選定されたベストの画像は書き出しておく#比較のために
 
-
-
-#ベース画像の選定終わり#TODO:ジャンプの瞬間を検知する処理入れば少し書き換え
+#ベース画像の選定終わり
 
 
 frame_faces_list = []#初期化ってせずにできるんかな．一応しとく#目の開き具合が最大のフレームの配列を格納#
