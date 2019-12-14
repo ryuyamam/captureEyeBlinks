@@ -264,42 +264,30 @@ for count in range(30):#TODO 撮影ボタンを押してからフレーム左フ
 # ジャンプ判定のベース画像選定方法
 faces_array = np.array(faces_list, dtype=int)#listからarrayに変換
 index = np.argmax(faces_array[:,1])#顔が一番含まれている画像のindexを抽出
-# print('index')
-# print(index)
-
 index_face_list = np.where(faces_array[:,1] == index)#顔が一番含まれている画像一覧のindexを取得
-# print(index_face_list)
-for i, name in enumerate(index_face_list):
-    face_image_most_included.append(faces_array[name])
+# 顔が一番含まれている画像一覧を
+sort_y = []
+sum_y = 0
+ina = 0
+for lists in faces_list:
+    sum_y += lists[4]
+    ina = ina + 1
+    if ina%2 == 0:
+        sort_y.append(sum_y)
+        sum_y = 0
+        print(sort_y)
+print('並び替え')
+b = np.argsort(sum_y)
+    
+print('---turami---')
+print(b[0])
 
-print('test')
-print(face_image_most_included)
+jump_number = []
+jump_number = np.where(faces_array[:,4] == b[0])
+# リストをソートする
 
-max_ave_y = 0#顔が一番上にある画像の平均y座標
-max_ave_y_index = 1#顔が一番上にある画像のindex
-for face, item in enumerate(face_image_most_included):
-    sum_y = 0
-    sum_i = 0
-    for face_index, items in enumerate(face_image_most_included[face]):
-         print(face_image_most_included[face])
-         print('items')
-         print(type(items))
-         print(items)
-         sum_y += items[4]
-         sum_i = sum_i + 1
-         print(sum_y)
-         if sum_i  == 20:
-             print('---len---')
-             if max_ave_y < sum_y / 20:
-                max_ave_y = sum_y
-                max_ave_y_index = face
-
-print('max_y')
-print(max_ave_y_index)
-extraction_face_array = face_image_most_included[max_ave_y_index]#idごとに配列を抽出
-print(extraction_face_array)
         
-img_base = cv2.imread('output_all/'+ str(face_image_most_included[max_ave_y_index,0])+'.jpg')  #画像読み取りimread(filename)
+img_base = cv2.imread('output_all/'+ str(faces_array[jump_number[0,1],0])+'.jpg')  #画像読み取りimread(filename)
 img_best = img_base.copy()
 cv2.imwrite('best.jpg', img_best)#とりあえず選定されたベストの画像は書き出しておく#比較のために
 
