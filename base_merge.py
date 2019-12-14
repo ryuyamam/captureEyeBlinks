@@ -157,6 +157,7 @@ def remove_bg(
 eyes_list = []
 eyes_average_list = []#フレーム数と対応#最も目を開いている人が多いフレームを選定
 faces_list = [] #顔のlistの配列[フレーム数，id(仮),目の開き具合,x,y座標,横,縦]
+face_image_most_included = []
 
 for count in range(30):#TODO 撮影ボタンを押してからフレーム左フレーム分連続撮影
 
@@ -255,6 +256,7 @@ for count in range(30):#TODO 撮影ボタンを押してからフレーム左フ
 # 古いベース画像の選定方法
 # eyes_average_array = np.array(eyes_average_list)#listからarrayに変換
 # eyes_average_sort_index = np.argsort(eyes_average_array)#昇順にソートしたインデックスを返す 目が一番開いてる
+
 # faces_array = np.array(faces_list, dtype=int)#listからarrayに変換
 # index = np.argmax(faces_array[:,1])#目が一番空いている画像のindexを取得
 # extraction_face_array = faces_array[index] 
@@ -262,30 +264,36 @@ for count in range(30):#TODO 撮影ボタンを押してからフレーム左フ
 # ジャンプ判定のベース画像選定方法
 faces_array = np.array(faces_list, dtype=int)#listからarrayに変換
 index = np.argmax(faces_array[:,1])#顔が一番含まれている画像のindexを抽出
+# print('index')
+# print(index)
 
 index_face_list = np.where(faces_array[:,1] == index)#顔が一番含まれている画像一覧のindexを取得
-face_image_most_included = faces_array[index_face_list]#顔が一番含まれている画像一覧を取得
+# print(index_face_list)
+for i, name in enumerate(index_face_list):
+    face_image_most_included.append(faces_array[name])
+
+print('test')
+print(face_image_most_included)
 
 max_ave_y = 0#顔が一番上にある画像の平均y座標
 max_ave_y_index = 0#顔が一番上にある画像のindex
-for face in face_image_most_included:
+for face, item in enumerate(face_image_most_included):
     sum_y = 0
-    for face_index in index:
-         sum_y += face_image_most_included[face,4]
-         if max_ave_sum_y < sum_y / index:
-             max_ave_sum_y = sum_y
+    for face_index, items in enumerate(item):
+         sum_y += items[:,4]
+         if face_index == faces_array[:,1]:
+             max_ave_y < sum_y / faces_array[:,1]
+             max_ave_y = sum_y
              max_ave_y_index = face
 
 extraction_face_array = face_image_most_included[max_ave_y_index]#idごとに配列を抽出
+print(extraction_face_array)
         
-
 img_base = cv2.imread('output_all/'+ str(face_image_most_included[max_ave_y_index,0])+'.jpg')  #画像読み取りimread(filename)
 img_best = img_base.copy()
 cv2.imwrite('best.jpg', img_best)#とりあえず選定されたベストの画像は書き出しておく#比較のために
 
 #ベース画像の選定終わり
-
-
 frame_faces_list = []#初期化ってせずにできるんかな．一応しとく#目の開き具合が最大のフレームの配列を格納#
 for item in faces_list:
     if item[0] == faces_array[index,0]:
