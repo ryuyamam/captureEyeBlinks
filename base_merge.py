@@ -276,16 +276,26 @@ print('test')
 print(face_image_most_included)
 
 max_ave_y = 0#顔が一番上にある画像の平均y座標
-max_ave_y_index = 0#顔が一番上にある画像のindex
+max_ave_y_index = 1#顔が一番上にある画像のindex
 for face, item in enumerate(face_image_most_included):
     sum_y = 0
-    for face_index, items in enumerate(item):
-         sum_y += items[:,4]
-         if face_index == faces_array[:,1]:
-             max_ave_y < sum_y / faces_array[:,1]
-             max_ave_y = sum_y
-             max_ave_y_index = face
+    sum_i = 0
+    for face_index, items in enumerate(face_image_most_included[face]):
+         print(face_image_most_included[face])
+         print('items')
+         print(type(items))
+         print(items)
+         sum_y += items[4]
+         sum_i = sum_i + 1
+         print(sum_y)
+         if sum_i  == 20:
+             print('---len---')
+             if max_ave_y < sum_y / 20:
+                max_ave_y = sum_y
+                max_ave_y_index = face
 
+print('max_y')
+print(max_ave_y_index)
 extraction_face_array = face_image_most_included[max_ave_y_index]#idごとに配列を抽出
 print(extraction_face_array)
         
